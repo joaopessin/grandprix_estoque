@@ -1,1 +1,1 @@
-# grandprix_estoque
+# Grandprix - Estoque de matérias-primas
