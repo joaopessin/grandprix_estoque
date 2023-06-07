@@ -4,4 +4,5 @@
 - 01/06: adicionado arquivo sql do desenvolvimento inicial do banco de dados do módulo 1
 - 07/06: finalizado o UML geral
 - 07/06: adicionado protótipo não funcional da Tela de Entrada
+- 07/06: adicionado protótipo não funcional da Tela de Consulta
 
