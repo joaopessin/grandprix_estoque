@@ -5,4 +5,4 @@
 - 07/06: finalizado o UML geral
 - 07/06: adicionado protótipo não funcional da Tela de Entrada
 - 07/06: adicionado protótipo não funcional da Tela de Consulta
-
+- 15/06: criação do protótipo funcional
