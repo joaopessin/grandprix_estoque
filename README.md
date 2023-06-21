@@ -8,3 +8,4 @@
 - 15/06: criação do protótipo funcional
 - 16/06: adicionado modelo funcional a partir da Tela de Cadastro
 - 19/06: adicionado protótipo funcional da Tela de Consulta
+- 21/06: adicionado protótipo funcional da Tela de Entrada
