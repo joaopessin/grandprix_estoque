@@ -4,6 +4,13 @@
  */
 package grandprixfuncional.telas_funcionais;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author marce
@@ -16,6 +23,40 @@ public class TelaConsulta extends javax.swing.JFrame {
     public TelaConsulta() {
         initComponents();
     }
+    
+      public void PopularJTable(String sql) {
+    try
+  {
+   Connection con=(Connection)DriverManager.getConnection("jdbc:mysql://localhost:3307/Estoque_de_materias_primas", "Layson", "123456");
+   PreparedStatement banco = (PreparedStatement)con.prepareStatement(sql);
+   banco.execute(); 
+ 
+   ResultSet resultado = banco.executeQuery(sql);
+ 
+   DefaultTableModel model =(DefaultTableModel) tabela_consulta.getModel();
+   model.setNumRows(0);
+ 
+   while(resultado.next())
+   {
+       model.addRow(new Object[] 
+       { 
+          //retorna os dados da tabela do BD, cada campo e um coluna.
+          resultado.getString("id"),
+          resultado.getString("nome"),
+          resultado.getString("valor_unitario"),
+          resultado.getString("quantidade"),
+         
+         
+       }); 
+  } 
+   banco.close();
+   con.close();
+  }
+ catch (SQLException ex)
+ {
+    System.out.println("o erro foi " +ex);
+  }
+ }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,11 +72,16 @@ public class TelaConsulta extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        tabela_consulta = new javax.swing.JTable();
+        btn_ritirar = new javax.swing.JButton();
+        btn_relatorio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                Select(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -73,32 +119,37 @@ public class TelaConsulta extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabela_consulta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tabela_consulta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Código", "Nome do produto"
+                "Código", "Nome do produto", "Valor unitario", "Quantidade"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabela_consulta);
 
-        jButton2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 145, 77));
-        jButton2.setText("RETIRAR");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 145, 77), 2));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btn_ritirar.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        btn_ritirar.setForeground(new java.awt.Color(255, 145, 77));
+        btn_ritirar.setText("RETIRAR");
+        btn_ritirar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 145, 77), 2));
+        btn_ritirar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btn_ritirarActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(255, 145, 77));
-        jButton3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("RELATÓRIO");
-        jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 145, 77), 2));
+        btn_relatorio.setBackground(new java.awt.Color(255, 145, 77));
+        btn_relatorio.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        btn_relatorio.setForeground(new java.awt.Color(255, 255, 255));
+        btn_relatorio.setText("RELATÓRIO");
+        btn_relatorio.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 145, 77), 2));
+        btn_relatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_relatorioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -116,9 +167,9 @@ public class TelaConsulta extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_ritirar, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btn_relatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(45, 45, 45))
         );
         jPanel1Layout.setVerticalGroup(
@@ -130,8 +181,8 @@ public class TelaConsulta extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_relatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_ritirar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(44, Short.MAX_VALUE))
         );
@@ -158,11 +209,43 @@ public class TelaConsulta extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        TelaConsulta.this.dispose();
+        TelaEntrada entrada = new TelaEntrada();
+        entrada.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btn_ritirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ritirarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        TelaConsulta.this.dispose();
+        TelaRetirada retirada = new TelaRetirada();
+        retirada.setVisible(true);
+        
+    }//GEN-LAST:event_btn_ritirarActionPerformed
+
+    private void btn_relatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_relatorioActionPerformed
+        // TODO add your handling code here:
+        TelaConsulta.this.dispose();
+        TelaRelatorio relatorio = new TelaRelatorio();
+        relatorio.setVisible(true);
+    }//GEN-LAST:event_btn_relatorioActionPerformed
+
+    private void Select(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Select
+        // TODO add your handling code here:
+         Connection conexao = null;
+        PreparedStatement statement = null;
+
+        String url = "jdbc:mysql://localhost:3307/Estoque_de_materias_primas";
+        String usuario = "Layson";
+        String senha = "123456";
+        
+        try {
+        conexao = DriverManager.getConnection(url, usuario, senha);
+        this.PopularJTable("SELECT * FROM Estoque_itens id");
+        } catch (SQLException ex) {
+            
+        }
+                          
+    }//GEN-LAST:event_Select
 
     /**
      * @param args the command line arguments
@@ -200,13 +283,13 @@ public class TelaConsulta extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_relatorio;
+    private javax.swing.JButton btn_ritirar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabela_consulta;
     // End of variables declaration//GEN-END:variables
 }
